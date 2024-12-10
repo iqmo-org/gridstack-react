@@ -39,7 +39,6 @@ export function GridStackProvider({
     [gridStack]
   );
 
-  // WIP
   const addSubGrid = useCallback(
     (
       fn: (

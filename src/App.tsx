@@ -209,7 +209,7 @@ function Toolbar() {
           }));
         }}
       >
-        Add Sub Grid (12x2) WIP
+        Add Sub Grid (12x1)
       </button>
     </div>
   );
