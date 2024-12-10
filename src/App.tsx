@@ -211,6 +211,10 @@ function Toolbar() {
       >
         Add Sub Grid (12x1)
       </button>
+
+      <a href="https://github.com/Aysnine/gridstack-react" target="_blank">
+        Source Code
+      </a>
     </div>
   );
 }
