@@ -33,7 +33,7 @@ export function GridStackRenderProvider({ children }: PropsWithChildren) {
     if (containerRef.current) {
       GridStack.renderCB = renderCBFn;
       return GridStack.init(optionsRef.current, containerRef.current);
-      // ! Can't listen sub grid changes
+      // ! Change event not firing on nested grids (resize, move...) https://github.com/gridstack/gridstack.js/issues/2671
       // .on("change", () => {
       //   console.log("changed");
       // })
