@@ -1,50 +1,51 @@
-# React + TypeScript + Vite
+# GridStack React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Online demo: https://gridstack-react.pages.dev/
 
-Currently, two official plugins are available:
+## TODO
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [x] Component Map
+- [x] Add Widgets
+- [ ] Add Sub Grid
 
-## Expanding the ESLint configuration
+## Usage
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+```tsx
+const COMPONENT_MAP: Record<string, React.FC<{ content: string }>> = {
+  Text: ({ content }) => <div className="w-full h-full">{content}</div>,
+  // ... other components here
+};
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
+const gridOptions: GridStackOptions = {
+  // ... initial grid options here
+  children: [
+    {
+      w: 2,
+      h: 2,
+      x: 0,
+      y: 0,
+      content: JSON.stringify({
+        component: "Text",
+        props: { content: "Item 1" },
+      }),
     },
-  },
-})
-```
+  ],
+};
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+export default function App() {
+  const [initialOptions] = useState(gridOptions);
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+  return (
+    <GridStackProvider initialOptions={initialOptions}>
+      <!-- Custom Toolbar maybe -->
+      <Toolbar />
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+      <GridStackRenderProvider>
+        <GridStackRender componentMap={COMPONENT_MAP} />
+      </GridStackRenderProvider>
+
+      <!-- other content... -->
+    </GridStackProvider>
+  );
+}
 ```
