@@ -6,7 +6,8 @@ Online demo: https://gridstack-react.pages.dev/
 
 - [x] Component Map
 - [x] Add Widgets
-- [ ] Add Sub Grid
+- [x] Add Sub Grid
+- [x] Nested Sub Grid
 
 ## Usage
 

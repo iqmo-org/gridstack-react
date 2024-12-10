@@ -48,13 +48,13 @@ export function GridStackProvider({
       ) => Omit<GridStackWidget, "id">
     ) => {
       const newId = `sub-grid-${Math.random().toString(36).substring(2, 15)}`;
-      const subWidgetIds = [];
+      const subWidgetIdMap = new Map<string, string>();
 
       const widget = fn(newId, (w) => {
         const subWidgetId = `widget-${Math.random()
           .toString(36)
           .substring(2, 15)}`;
-        subWidgetIds.push(subWidgetId);
+        subWidgetIdMap.set(subWidgetId, w.content || "");
         return { ...w, id: subWidgetId };
       });
 
@@ -62,7 +62,9 @@ export function GridStackProvider({
 
       setRawContentMap((prev) => {
         const newMap = new Map<string, string>(prev);
-        newMap.set(newId, widget.content || "");
+        subWidgetIdMap.forEach((content, id) => {
+          newMap.set(id, content);
+        });
         return newMap;
       });
     },
