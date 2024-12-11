@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 import { GridStackOptions, GridStackWidget } from "gridstack";
 
 import "./demo.css";
 import {
+  ComponentDataType,
+  ComponentMap,
   GridStackProvider,
   GridStackRender,
   GridStackRenderProvider,
@@ -17,13 +19,17 @@ const BREAKPOINTS = [
   { c: 8, w: 1100 },
 ];
 
-const COMPONENT_MAP: Record<string, React.FC<{ content: string }>> = {
-  Text: ({ content }) => <div className="w-full h-full">{content}</div>,
+function Text({ content }: { content: string }) {
+  return <div className="w-full h-full">{content}</div>;
+}
+
+const COMPONENT_MAP: ComponentMap = {
+  Text,
   // ... other components here
 };
 
 // ! Content must be json string like this:
-// { component: "Text", props: { content: "Item 1" } }
+// { name: "Text", props: { content: "Item 1" } }
 const gridOptions: GridStackOptions = {
   acceptWidgets: true,
   columnOpts: {
@@ -52,9 +58,9 @@ const gridOptions: GridStackOptions = {
       x: 0,
       y: 0,
       content: JSON.stringify({
-        component: "Text",
+        name: "Text",
         props: { content: "Item 1" },
-      }),
+      } satisfies ComponentDataType<ComponentProps<typeof Text>>), // if need type check
     },
     {
       id: "item2",
@@ -63,7 +69,7 @@ const gridOptions: GridStackOptions = {
       x: 2,
       y: 0,
       content: JSON.stringify({
-        component: "Text",
+        name: "Text",
         props: { content: "Item 2" },
       }),
     },
@@ -89,7 +95,7 @@ const gridOptions: GridStackOptions = {
             x: 0,
             y: 0,
             content: JSON.stringify({
-              component: "Text",
+              name: "Text",
               props: { content: "Sub Grid 1 Title" },
             }),
           },
@@ -100,7 +106,7 @@ const gridOptions: GridStackOptions = {
             x: 0,
             y: 1,
             content: JSON.stringify({
-              component: "Text",
+              name: "Text",
               props: { content: "Item 3" },
             }),
           },
@@ -111,7 +117,7 @@ const gridOptions: GridStackOptions = {
             x: 2,
             y: 0,
             content: JSON.stringify({
-              component: "Text",
+              name: "Text",
               props: { content: "Item 4" },
             }),
           },
@@ -130,8 +136,6 @@ export default function App() {
 
   return (
     <GridStackProvider initialOptions={initialOptions}>
-      <h2>GridStack React Demo (Uncontrolled)</h2>
-
       <Toolbar />
 
       <GridStackRenderProvider>
@@ -166,7 +170,7 @@ function Toolbar() {
             x: 0,
             y: 0,
             content: JSON.stringify({
-              component: "Text",
+              name: "Text",
               props: { content: id },
             }),
           }));
@@ -197,7 +201,7 @@ function Toolbar() {
                   x: 0,
                   y: 0,
                   content: JSON.stringify({
-                    component: "Text",
+                    name: "Text",
                     props: { content: "Sub Grid 1 Title" + id },
                   }),
                 }),

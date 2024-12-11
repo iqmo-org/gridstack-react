@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 
+// TODO: support full widget metadata
 export const GridStackWidgetContext = createContext<{
-  // TODO: support full widget metadata
   widget: {
     id: string;
   };

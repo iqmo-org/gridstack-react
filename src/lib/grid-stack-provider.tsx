@@ -7,11 +7,11 @@ export function GridStackProvider({
   initialOptions,
 }: PropsWithChildren<{ initialOptions: GridStackOptions }>) {
   const [gridStack, setGridStack] = useState<GridStack | null>(null);
-  const [rawContentMap, setRawContentMap] = useState(() => {
-    const map = new Map<string, string>();
+  const [rawWidgetMetaMap, setRawWidgetMetaMap] = useState(() => {
+    const map = new Map<string, GridStackWidget>();
     const deepFindNodeWithContent = (obj: GridStackWidget) => {
       if (obj.id && obj.content) {
-        map.set(obj.id, obj.content);
+        map.set(obj.id, obj);
       }
       if (obj.subGridOpts?.children) {
         obj.subGridOpts.children.forEach((child: GridStackWidget) => {
@@ -30,9 +30,9 @@ export function GridStackProvider({
       const newId = `widget-${Math.random().toString(36).substring(2, 15)}`;
       const widget = fn(newId);
       gridStack?.addWidget({ ...widget, id: newId });
-      setRawContentMap((prev) => {
-        const newMap = new Map<string, string>(prev);
-        newMap.set(newId, widget.content || "");
+      setRawWidgetMetaMap((prev) => {
+        const newMap = new Map<string, GridStackWidget>(prev);
+        newMap.set(newId, widget);
         return newMap;
       });
     },
@@ -47,22 +47,22 @@ export function GridStackProvider({
       ) => Omit<GridStackWidget, "id">
     ) => {
       const newId = `sub-grid-${Math.random().toString(36).substring(2, 15)}`;
-      const subWidgetIdMap = new Map<string, string>();
+      const subWidgetIdMap = new Map<string, GridStackWidget>();
 
       const widget = fn(newId, (w) => {
         const subWidgetId = `widget-${Math.random()
           .toString(36)
           .substring(2, 15)}`;
-        subWidgetIdMap.set(subWidgetId, w.content || "");
+        subWidgetIdMap.set(subWidgetId, w);
         return { ...w, id: subWidgetId };
       });
 
       gridStack?.addWidget({ ...widget, id: newId });
 
-      setRawContentMap((prev) => {
-        const newMap = new Map<string, string>(prev);
-        subWidgetIdMap.forEach((content, id) => {
-          newMap.set(id, content);
+      setRawWidgetMetaMap((prev) => {
+        const newMap = new Map<string, GridStackWidget>(prev);
+        subWidgetIdMap.forEach((meta, id) => {
+          newMap.set(id, meta);
         });
         return newMap;
       });
@@ -73,8 +73,8 @@ export function GridStackProvider({
   const removeWidget = useCallback(
     (id: string) => {
       gridStack?.removeWidget(id);
-      setRawContentMap((prev) => {
-        const newMap = new Map<string, string>(prev);
+      setRawWidgetMetaMap((prev) => {
+        const newMap = new Map<string, GridStackWidget>(prev);
         newMap.delete(id);
         return newMap;
       });
@@ -101,9 +101,9 @@ export function GridStackProvider({
           value: gridStack,
           set: setGridStack,
         },
-        _rawContentMap: {
-          value: rawContentMap,
-          set: setRawContentMap,
+        _rawWidgetMetaMap: {
+          value: rawWidgetMetaMap,
+          set: setRawWidgetMetaMap,
         },
       }}
     >
