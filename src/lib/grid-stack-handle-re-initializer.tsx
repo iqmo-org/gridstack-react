@@ -1,12 +1,20 @@
 import { PropsWithChildren, useLayoutEffect } from "react";
 import { useGridStackContext } from "./grid-stack-context";
-import { GridItemHTMLElement, Utils } from "gridstack";
+import {
+  GridItemHTMLElement,
+  GridStack,
+  GridStackNode,
+  Utils,
+} from "gridstack";
 import { DDElementHost } from "gridstack/dist/dd-element";
 import { useGridStackItemContext } from "./grid-stack-item-context";
 import { useGridStackRenderContext } from "./grid-stack-render-context";
 
-// TODO: This is a temporary solution to forward the handle to the item.
-export function GridStackItemHandleForwarder(props: PropsWithChildren) {
+/**
+ * @experimental
+ * This is a temporary solution to reinitialize the handle for the grid stack item.
+ */
+export function GridStackHandleReInitializer(props: PropsWithChildren) {
   const {
     _gridStack: { value: gridStack },
   } = useGridStackContext();
@@ -20,18 +28,21 @@ export function GridStackItemHandleForwarder(props: PropsWithChildren) {
         const element = Utils.getElement(
           widgetContainer.parentElement!
         ) as GridItemHTMLElement & DDElementHost;
-        const node = element.gridstackNode;
+        const rawNode = element.gridstackNode;
         const ddElement = element.ddElement;
-        if (node && ddElement) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
+        if (rawNode && ddElement) {
+          // https://github.com/gridstack/gridstack.js/blob/a917afcada4bd2892963678c8b1bde7630bb9528/src/gridstack.ts#L2417
+          const node = rawNode as GridStackNode & { _initDD: boolean };
           node._initDD = false;
+
           ddElement.cleanDraggable();
           ddElement.cleanDroppable();
 
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          gridStack?._prepareDragDropByNode(node);
+          // https://github.com/gridstack/gridstack.js/blob/a917afcada4bd2892963678c8b1bde7630bb9528/src/gridstack.ts#L2402
+          const g = gridStack as GridStack & {
+            _prepareDragDropByNode: (node: GridStackNode) => void;
+          };
+          g._prepareDragDropByNode(node);
         }
       }
     }

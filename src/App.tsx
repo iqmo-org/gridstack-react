@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "./demo.css";
 
 import {
+  GridStackHandleReInitializer,
   GridStackItem,
   GridStackProvider,
   GridStackRender,
@@ -12,6 +13,7 @@ import { GridStackOptions, GridStackWidget } from "gridstack";
 import {
   BREAKPOINTS,
   CELL_HEIGHT,
+  CUSTOM_DRAGGABLE_HANDLE_CLASSNAME,
   defaultGridOptions,
 } from "./defaultGridOptions";
 import { COMPONENT_MAP, ComponentInfo } from "./componentMap";
@@ -54,6 +56,15 @@ export default function App() {
             </GridStackItem>
           );
         })}
+
+        {/* Experimental: Render item with custom handle */}
+        <GridStackItem id="item5">
+          <GridStackHandleReInitializer>
+            <button className={CUSTOM_DRAGGABLE_HANDLE_CLASSNAME}>
+              Handle ONLY HERE
+            </button>
+          </GridStackHandleReInitializer>
+        </GridStackItem>
       </GridStackRender>
 
       <DebugInfo />

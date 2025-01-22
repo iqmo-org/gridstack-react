@@ -10,9 +10,9 @@ export {
   useGridStackRenderContext,
 } from "./grid-stack-render-context";
 export { GridStackRender } from "./grid-stack-render";
-export { GridStackItem as GridStackItem } from "./grid-stack-item";
-export { GridStackItemHandleForwarder as GridStackItemHandleForwarder } from "./grid-stack-item-handle-forwarder";
+export { GridStackItem } from "./grid-stack-item";
+export { GridStackHandleReInitializer } from "./grid-stack-handle-re-initializer";
 export {
-  GridStackItemContext as GridStackWidgetContext,
-  type GridStackItemContextType as GridStackWidgetContextType,
+  GridStackItemContext,
+  type GridStackItemContextType,
 } from "./grid-stack-item-context";

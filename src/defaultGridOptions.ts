@@ -8,7 +8,10 @@ export const BREAKPOINTS = [
   { c: 8, w: 1100 },
 ];
 
+export const CUSTOM_DRAGGABLE_HANDLE_CLASSNAME = "custom-draggable-handle";
+
 export const defaultGridOptions: GridStackOptions = {
+  handleClass: CUSTOM_DRAGGABLE_HANDLE_CLASSNAME,
   acceptWidgets: true,
   columnOpts: {
     breakpointForWindow: true,
@@ -64,6 +67,7 @@ export const defaultGridOptions: GridStackOptions = {
             w: 12,
             x: 0,
             y: 0,
+            content: "Sub Grid 1",
           },
           {
             id: "item3",
@@ -82,6 +86,13 @@ export const defaultGridOptions: GridStackOptions = {
         ],
       },
       w: 12,
+      x: 0,
+      y: 2,
+    },
+    {
+      id: "item5",
+      w: 2,
+      h: 2,
       x: 0,
       y: 2,
     },
