@@ -1,154 +1,72 @@
-import { ComponentProps, useEffect, useState } from "react";
-import { GridStackOptions, GridStackWidget } from "gridstack";
+import { useEffect, useState } from "react";
 
 import "./demo.css";
+
 import {
-  ComponentDataType,
-  ComponentMap,
+  GridStackItem,
   GridStackProvider,
   GridStackRender,
-  GridStackRenderProvider,
   useGridStackContext,
 } from "./lib";
+import { GridStackOptions, GridStackWidget } from "gridstack";
+import {
+  BREAKPOINTS,
+  CELL_HEIGHT,
+  defaultGridOptions,
+} from "./defaultGridOptions";
 
-const CELL_HEIGHT = 50;
-const BREAKPOINTS = [
-  { c: 1, w: 700 },
-  { c: 3, w: 850 },
-  { c: 6, w: 950 },
-  { c: 8, w: 1100 },
-];
-
-function Text({ content }: { content: string }) {
-  return <div className="w-full h-full">{content}</div>;
-}
-
-const COMPONENT_MAP: ComponentMap = {
-  Text,
-  // ... other components here
-};
-
-// ! Content must be json string like this:
-// { name: "Text", props: { content: "Item 1" } }
-const gridOptions: GridStackOptions = {
-  acceptWidgets: true,
-  columnOpts: {
-    breakpointForWindow: true,
-    breakpoints: BREAKPOINTS,
-    layout: "moveScale",
-    columnMax: 12,
-  },
-  margin: 8,
-  cellHeight: CELL_HEIGHT,
-  subGridOpts: {
-    acceptWidgets: true,
-    columnOpts: {
-      breakpoints: BREAKPOINTS,
-      layout: "moveScale",
-    },
-    margin: 8,
-    minRow: 2,
-    cellHeight: CELL_HEIGHT,
-  },
-  children: [
-    {
-      id: "item1",
-      h: 2,
-      w: 2,
-      x: 0,
-      y: 0,
-      content: JSON.stringify({
-        name: "Text",
-        props: { content: "Item 1" },
-      } satisfies ComponentDataType<ComponentProps<typeof Text>>), // if need type check
-    },
-    {
-      id: "item2",
-      h: 2,
-      w: 2,
-      x: 2,
-      y: 0,
-      content: JSON.stringify({
-        name: "Text",
-        props: { content: "Item 2" },
-      }),
-    },
-    {
-      id: "sub-grid-1",
-      h: 5,
-      sizeToContent: true,
-      subGridOpts: {
-        acceptWidgets: true,
-        cellHeight: CELL_HEIGHT,
-        alwaysShowResizeHandle: false,
-        column: "auto",
-        minRow: 2,
-        layout: "list",
-        margin: 8,
-        children: [
-          {
-            id: "sub-grid-1-title",
-            locked: true,
-            noMove: true,
-            noResize: true,
-            w: 12,
-            x: 0,
-            y: 0,
-            content: JSON.stringify({
-              name: "Text",
-              props: { content: "Sub Grid 1 Title" },
-            }),
-          },
-          {
-            id: "item3",
-            h: 2,
-            w: 2,
-            x: 0,
-            y: 1,
-            content: JSON.stringify({
-              name: "Text",
-              props: { content: "Item 3" },
-            }),
-          },
-          {
-            id: "item4",
-            h: 2,
-            w: 2,
-            x: 2,
-            y: 0,
-            content: JSON.stringify({
-              name: "Text",
-              props: { content: "Item 4" },
-            }),
-          },
-        ],
-      },
-      w: 12,
-      x: 0,
-      y: 2,
-    },
-  ],
+const COMPONENT_MAP = {
+  Text: (props: { content: string }) => <div>{props.content}</div>,
 };
 
 export default function App() {
-  // ! Uncontrolled
-  const [initialOptions] = useState(gridOptions);
+  const [uncontrolledInitialOptions] =
+    useState<GridStackOptions>(defaultGridOptions);
+
+  const [widgetMapComponentInfo] = useState<
+    Record<string, { component: keyof typeof COMPONENT_MAP; props: unknown }>
+  >({
+    item3: { component: "Text", props: { content: "Text 1" } },
+    item4: { component: "Text", props: { content: "Text 2" } },
+  });
 
   return (
-    <GridStackProvider initialOptions={initialOptions}>
+    <GridStackProvider initialOptions={uncontrolledInitialOptions}>
       <Toolbar />
 
-      <GridStackRenderProvider>
-        <GridStackRender componentMap={COMPONENT_MAP} />
-      </GridStackRenderProvider>
+      <GridStackRender>
+        {/* Simple: Render item with id selector */}
+        <GridStackItem id="item1">
+          <div>hello</div>
+        </GridStackItem>
+
+        <GridStackItem id="item2">
+          <div>grid</div>
+        </GridStackItem>
+
+        {/* Advanced: Render item with widget map component info */}
+        {Object.entries(widgetMapComponentInfo).map(([id, componentInfo]) => {
+          const Component = COMPONENT_MAP[componentInfo.component];
+          return (
+            <GridStackItem key={id} id={id}>
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              <Component {...(componentInfo.props as any)} />
+            </GridStackItem>
+          );
+        })}
+      </GridStackRender>
 
       <DebugInfo />
     </GridStackProvider>
   );
 }
 
+function newId() {
+  return `widget-${Math.random().toString(36).substring(2, 15)}`;
+}
+
 function Toolbar() {
-  const { addWidget, addSubGrid } = useGridStackContext();
+  const { addWidget } = useGridStackContext();
 
   return (
     <div
@@ -164,16 +82,13 @@ function Toolbar() {
     >
       <button
         onClick={() => {
-          addWidget((id) => ({
+          addWidget({
+            id: newId(),
             w: 2,
             h: 2,
             x: 0,
             y: 0,
-            content: JSON.stringify({
-              name: "Text",
-              props: { content: id },
-            }),
-          }));
+          });
         }}
       >
         Add Text (2x2)
@@ -181,7 +96,8 @@ function Toolbar() {
 
       <button
         onClick={() => {
-          addSubGrid((id, withWidget) => ({
+          addWidget({
+            id: newId(),
             h: 5,
             noResize: false,
             sizeToContent: true,
@@ -192,7 +108,8 @@ function Toolbar() {
               minRow: 2,
               cellHeight: CELL_HEIGHT,
               children: [
-                withWidget({
+                {
+                  id: newId(),
                   h: 1,
                   locked: true,
                   noMove: true,
@@ -200,17 +117,13 @@ function Toolbar() {
                   w: 12,
                   x: 0,
                   y: 0,
-                  content: JSON.stringify({
-                    name: "Text",
-                    props: { content: "Sub Grid 1 Title" + id },
-                  }),
-                }),
+                },
               ],
             },
             w: 12,
             x: 0,
             y: 0,
-          }));
+          });
         }}
       >
         Add Sub Grid (12x1)

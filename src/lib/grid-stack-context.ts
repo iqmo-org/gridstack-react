@@ -1,28 +1,23 @@
 import type { GridStack, GridStackOptions, GridStackWidget } from "gridstack";
 import { createContext, useContext } from "react";
 
-export const GridStackContext = createContext<{
+export type WidgetCallback = (id: string) => Omit<GridStackWidget, "id">;
+
+export interface GridStackContextType {
   initialOptions: GridStackOptions;
-  gridStack: GridStack | null;
-  addWidget: (fn: (id: string) => Omit<GridStackWidget, "id">) => void;
+  addWidget: (widget: GridStackWidget) => void;
   removeWidget: (id: string) => void;
-  addSubGrid: (
-    fn: (
-      id: string,
-      withWidget: (w: Omit<GridStackWidget, "id">) => GridStackWidget
-    ) => Omit<GridStackWidget, "id">
-  ) => void;
-  saveOptions: () => GridStackOptions | GridStackWidget[] | undefined;
+  saveOptions: () => ReturnType<GridStack["save"]> | undefined;
 
   _gridStack: {
     value: GridStack | null;
     set: React.Dispatch<React.SetStateAction<GridStack | null>>;
   };
-  _rawWidgetMetaMap: {
-    value: Map<string, GridStackWidget>;
-    set: React.Dispatch<React.SetStateAction<Map<string, GridStackWidget>>>;
-  };
-} | null>(null);
+}
+
+export const GridStackContext = createContext<GridStackContextType | null>(
+  null
+);
 
 export function useGridStackContext() {
   const context = useContext(GridStackContext);

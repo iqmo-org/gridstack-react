@@ -1,69 +1,58 @@
-import { createPortal } from "react-dom";
+import {
+  PropsWithChildren,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { useGridStackContext } from "./grid-stack-context";
-import { useGridStackRenderContext } from "./grid-stack-render-context";
-import { GridStackWidgetContext } from "./grid-stack-widget-context";
-import { GridStackWidget } from "gridstack";
-import { ComponentType } from "react";
+import { GridStack, GridStackOptions, GridStackWidget } from "gridstack";
+import { GridStackRenderContext } from "./grid-stack-render-context";
 
-export interface ComponentDataType<T = object> {
-  name: string;
-  props: T;
-}
+export function GridStackRender({ children }: PropsWithChildren) {
+  const {
+    _gridStack: { value: gridStack, set: setGridStack },
+    initialOptions,
+  } = useGridStackContext();
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ComponentMap = Record<string, ComponentType<any>>;
+  const widgetContainersRef = useRef<Map<string, HTMLElement>>(new Map());
+  const containerRef = useRef<HTMLDivElement>(null);
+  const optionsRef = useRef<GridStackOptions>(initialOptions);
 
-function parseWeightMetaToComponentData(
-  meta: GridStackWidget
-): ComponentDataType & { error: unknown } {
-  let error = null;
-  let name = "";
-  let props = {};
-  try {
-    if (meta.content) {
-      const result = JSON.parse(meta.content) as {
-        name: string;
-        props: object;
+  const initGrid = useCallback(() => {
+    if (containerRef.current) {
+      GridStack.renderCB = (element: HTMLElement, widget: GridStackWidget) => {
+        if (widget.id) {
+          widgetContainersRef.current.set(widget.id, element);
+        }
       };
-      name = result.name;
-      props = result.props;
+      return GridStack.init(optionsRef.current, containerRef.current);
     }
-  } catch (e) {
-    error = e;
-  }
-  return {
-    name,
-    props,
-    error,
-  };
-}
+    return null;
+  }, []);
 
-export function GridStackRender(props: { componentMap: ComponentMap }) {
-  const { _rawWidgetMetaMap } = useGridStackContext();
-  const { getWidgetContainer } = useGridStackRenderContext();
+  useLayoutEffect(() => {
+    if (!gridStack) {
+      try {
+        setGridStack(initGrid());
+      } catch (e) {
+        console.error("Error initializing gridstack", e);
+      }
+    }
+  }, [gridStack, initGrid, setGridStack]);
 
   return (
-    <>
-      {Array.from(_rawWidgetMetaMap.value.entries()).map(([id, meta]) => {
-        const componentData = parseWeightMetaToComponentData(meta);
-
-        const WidgetComponent = props.componentMap[componentData.name];
-
-        const widgetContainer = getWidgetContainer(id);
-
-        if (!widgetContainer) {
-          throw new Error(`Widget container not found for id: ${id}`);
-        }
-
-        return (
-          <GridStackWidgetContext.Provider key={id} value={{ widget: { id } }}>
-            {createPortal(
-              <WidgetComponent {...componentData.props} />,
-              widgetContainer
-            )}
-          </GridStackWidgetContext.Provider>
-        );
-      })}
-    </>
+    <GridStackRenderContext.Provider
+      value={useMemo(
+        () => ({
+          getWidgetContainer: (widgetId: string) => {
+            return widgetContainersRef.current.get(widgetId) || null;
+          },
+        }),
+        []
+      )}
+    >
+      <div ref={containerRef}>{gridStack ? children : null}</div>
+    </GridStackRenderContext.Provider>
   );
 }
