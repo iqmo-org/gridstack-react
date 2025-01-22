@@ -14,21 +14,21 @@ import {
   CELL_HEIGHT,
   defaultGridOptions,
 } from "./defaultGridOptions";
-
-const COMPONENT_MAP = {
-  Text: (props: { content: string }) => <div>{props.content}</div>,
-};
+import { COMPONENT_MAP, ComponentInfo } from "./componentMap";
 
 export default function App() {
   const [uncontrolledInitialOptions] =
     useState<GridStackOptions>(defaultGridOptions);
 
-  const [widgetMapComponentInfo] = useState<
-    Record<string, { component: keyof typeof COMPONENT_MAP; props: unknown }>
-  >({
-    item3: { component: "Text", props: { content: "Text 1" } },
-    item4: { component: "Text", props: { content: "Text 2" } },
-  });
+  const [widgetMapComponentInfo] = useState<Record<string, ComponentInfo>>(
+    () => ({
+      item3: { component: "Text", serializableProps: { content: "Text" } },
+      item4: {
+        component: "Button",
+        serializableProps: { label: "Click me" },
+      },
+    })
+  );
 
   return (
     <GridStackProvider initialOptions={uncontrolledInitialOptions}>
@@ -50,7 +50,7 @@ export default function App() {
           return (
             <GridStackItem key={id} id={id}>
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              <Component {...(componentInfo.props as any)} />
+              <Component {...(componentInfo.serializableProps as any)} />
             </GridStackItem>
           );
         })}
