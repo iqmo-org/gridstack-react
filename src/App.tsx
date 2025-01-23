@@ -17,67 +17,107 @@ import {
   defaultGridOptions,
 } from "./defaultGridOptions";
 import { COMPONENT_MAP, ComponentInfo } from "./componentMap";
+import { ComplexCardEditableWrapper } from "./ComplexCard";
+import { newId } from "./utils";
+import {
+  ComponentInfoMapProvider,
+  useComponentInfoMap,
+} from "./ComponentsInfo";
 
 export default function App() {
   const [uncontrolledInitialOptions] =
     useState<GridStackOptions>(defaultGridOptions);
 
-  const [widgetMapComponentInfo] = useState<Record<string, ComponentInfo>>(
+  const [initialComponentInfoMap] = useState<Record<string, ComponentInfo>>(
     () => ({
       item3: { component: "Text", serializableProps: { content: "Text" } },
       item4: {
         component: "Button",
         serializableProps: { label: "Click me" },
       },
+      item999: {
+        component: "ComplexCard",
+        serializableProps: { title: "Complex Card" },
+      },
     })
   );
 
   return (
     <GridStackProvider initialOptions={uncontrolledInitialOptions}>
-      <Toolbar />
+      <ComponentInfoMapProvider
+        initialComponentInfoMap={initialComponentInfoMap}
+      >
+        <Toolbar />
 
-      <GridStackRender>
-        {/* Simple: Render item with id selector */}
-        <GridStackItem id="item1">
-          <div>hello</div>
-        </GridStackItem>
+        <GridStackRender>
+          {/* Simple: Render item with id selector */}
+          <GridStackItem id="item1">
+            <div>hello</div>
+          </GridStackItem>
 
-        <GridStackItem id="item2">
-          <div>grid</div>
-        </GridStackItem>
+          <GridStackItem id="item2">
+            <div>grid</div>
+          </GridStackItem>
 
-        {/* Advanced: Render item with widget map component info */}
-        {Object.entries(widgetMapComponentInfo).map(([id, componentInfo]) => {
-          const Component = COMPONENT_MAP[componentInfo.component];
-          return (
-            <GridStackItem key={id} id={id}>
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              <Component {...(componentInfo.serializableProps as any)} />
-            </GridStackItem>
-          );
-        })}
+          {/* Advanced: Render item with widget map component info */}
+          <DynamicComponents />
 
-        {/* Experimental: Render item with custom handle */}
-        <GridStackItem id="item5">
-          <GridStackHandleReInitializer>
-            <button className={CUSTOM_DRAGGABLE_HANDLE_CLASSNAME}>
-              Handle ONLY HERE
-            </button>
-          </GridStackHandleReInitializer>
-        </GridStackItem>
-      </GridStackRender>
+          {/* Experimental: Render item with custom handle */}
+          <GridStackItem id="item5">
+            <GridStackHandleReInitializer>
+              <button className={CUSTOM_DRAGGABLE_HANDLE_CLASSNAME}>
+                Handle ONLY HERE
+              </button>
+            </GridStackHandleReInitializer>
+          </GridStackItem>
+        </GridStackRender>
 
-      <DebugInfo />
+        <DebugInfo />
+      </ComponentInfoMapProvider>
     </GridStackProvider>
   );
 }
 
-function newId() {
-  return `widget-${Math.random().toString(36).substring(2, 15)}`;
+export function DynamicComponents() {
+  const { componentInfoMap } = useComponentInfoMap();
+
+  return (
+    <>
+      {Array.from(componentInfoMap.entries()).map(([id, componentInfo]) => {
+        const Component = COMPONENT_MAP[componentInfo.component];
+        if (!Component) {
+          throw new Error(`Component ${componentInfo.component} not found`);
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const props = componentInfo.serializableProps as any;
+
+        if (componentInfo.component === "ComplexCard") {
+          return (
+            <GridStackItem key={id} id={id}>
+              <ComplexCardEditableWrapper
+                key={`complex-card-editable-wrapper-${id}`}
+                serializableProps={componentInfo.serializableProps}
+              >
+                <Component {...props} key={`component-${id}`} />
+              </ComplexCardEditableWrapper>
+            </GridStackItem>
+          );
+        }
+
+        return (
+          <GridStackItem key={id} id={id}>
+            <Component {...props} key={`component-${id}`} />
+          </GridStackItem>
+        );
+      })}
+    </>
+  );
 }
 
 function Toolbar() {
   const { addWidget } = useGridStackContext();
+  const { addComponentInfo } = useComponentInfoMap();
 
   return (
     <div
@@ -93,12 +133,17 @@ function Toolbar() {
     >
       <button
         onClick={() => {
+          const widgetId = newId();
           addWidget({
-            id: newId(),
+            id: widgetId,
             w: 2,
             h: 2,
             x: 0,
             y: 0,
+          });
+          addComponentInfo(widgetId, {
+            component: "Text",
+            serializableProps: { content: "Text " + widgetId },
           });
         }}
       >

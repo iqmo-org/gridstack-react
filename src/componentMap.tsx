@@ -1,9 +1,10 @@
 import { ComponentProps } from "react";
+import { ComplexCard } from "./ComplexCard";
 
 export const COMPONENT_MAP = {
   Text: (props: { content: string }) => <div>{props.content}</div>,
   Button: (props: { label: string }) => <button>{props.label}</button>,
-
+  ComplexCard,
   // ... more components here
 };
 

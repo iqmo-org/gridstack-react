@@ -96,5 +96,12 @@ export const defaultGridOptions: GridStackOptions = {
       x: 0,
       y: 2,
     },
+    {
+      id: "item999",
+      w: 4,
+      h: 4,
+      x: 0,
+      y: 2,
+    },
   ],
 };
