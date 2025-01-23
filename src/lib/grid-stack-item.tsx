@@ -5,11 +5,11 @@ import { GridStackItemContext } from "./grid-stack-item-context";
 import { useGridStackContext } from "./grid-stack-context";
 import { GridItemHTMLElement } from "gridstack";
 
-export function GridStackItem(
-  props: PropsWithChildren<{
-    id: string;
-  }>
-) {
+export type GridStackItemProps = PropsWithChildren<{
+  id: string;
+}>;
+
+export function GridStackItem(props: GridStackItemProps) {
   const renderContext = useGridStackRenderContext();
   const widgetContainer = renderContext.getWidgetContainer(props.id);
 

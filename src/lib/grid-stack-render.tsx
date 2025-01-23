@@ -3,7 +3,9 @@ import { useGridStackContext } from "./grid-stack-context";
 import { GridStack, GridStackOptions, GridStackWidget } from "gridstack";
 import { GridStackRenderContext } from "./grid-stack-render-context";
 
-export function GridStackRender({ children }: PropsWithChildren) {
+export type GridStackRenderProps = PropsWithChildren;
+
+export function GridStackRender({ children }: GridStackRenderProps) {
   const {
     _gridStack: { value: gridStack, set: setGridStack },
     initialOptions,

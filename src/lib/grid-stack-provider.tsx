@@ -7,10 +7,14 @@ import type {
 import { type PropsWithChildren, useCallback, useState } from "react";
 import { GridStackContext } from "./grid-stack-context";
 
+export type GridStackProviderProps = PropsWithChildren<{
+  initialOptions: GridStackOptions;
+}>;
+
 export function GridStackProvider({
   children,
   initialOptions,
-}: PropsWithChildren<{ initialOptions: GridStackOptions }>) {
+}: GridStackProviderProps) {
   const [gridStack, setGridStack] = useState<GridStack | null>(null);
 
   const addWidget = useCallback(

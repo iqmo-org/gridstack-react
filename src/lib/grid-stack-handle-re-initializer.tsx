@@ -10,11 +10,15 @@ import { DDElementHost } from "gridstack/dist/dd-element";
 import { useGridStackItemContext } from "./grid-stack-item-context";
 import { useGridStackRenderContext } from "./grid-stack-render-context";
 
+export type GridStackHandleReInitializerProps = PropsWithChildren;
+
 /**
  * @experimental
  * This is a temporary solution to reinitialize the handle for the grid stack item.
  */
-export function GridStackHandleReInitializer(props: PropsWithChildren) {
+export function GridStackHandleReInitializer(
+  props: GridStackHandleReInitializerProps
+) {
   const {
     _gridStack: { value: gridStack },
   } = useGridStackContext();

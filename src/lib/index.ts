@@ -1,18 +1,26 @@
-export {
-  type GridStackContextType,
-  GridStackContext,
-  useGridStackContext,
-} from "./grid-stack-context";
+export type { GridStackContextType } from "./grid-stack-context";
+export { GridStackContext, useGridStackContext } from "./grid-stack-context";
+
+export type { GridStackProviderProps } from "./grid-stack-provider";
 export { GridStackProvider } from "./grid-stack-provider";
+
+export type { GridStackRenderContextType } from "./grid-stack-render-context";
 export {
   GridStackRenderContext,
   useGridStackRenderContext,
 } from "./grid-stack-render-context";
+
+export type { GridStackRenderProps } from "./grid-stack-render";
 export { GridStackRender } from "./grid-stack-render";
+
+export type { GridStackItemProps } from "./grid-stack-item";
 export { GridStackItem } from "./grid-stack-item";
-export { GridStackHandleReInitializer } from "./grid-stack-handle-re-initializer";
+
+export type { GridStackItemContextType } from "./grid-stack-item-context";
 export {
   GridStackItemContext,
-  type GridStackItemContextType,
   useGridStackItemContext,
 } from "./grid-stack-item-context";
+
+export type { GridStackHandleReInitializerProps } from "./grid-stack-handle-re-initializer";
+export { GridStackHandleReInitializer } from "./grid-stack-handle-re-initializer";
