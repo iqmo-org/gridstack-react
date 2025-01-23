@@ -41,10 +41,8 @@ export default function App() {
   );
 
   return (
-    <GridStackProvider initialOptions={uncontrolledInitialOptions}>
-      <ComponentInfoMapProvider
-        initialComponentInfoMap={initialComponentInfoMap}
-      >
+    <ComponentInfoMapProvider initialComponentInfoMap={initialComponentInfoMap}>
+      <GridStackProvider initialOptions={uncontrolledInitialOptions}>
         <Toolbar />
 
         <GridStackRender>
@@ -58,7 +56,7 @@ export default function App() {
           </GridStackItem>
 
           {/* Advanced: Render item with widget map component info */}
-          <DynamicComponents />
+          <DynamicGridStackItems />
 
           {/* Experimental: Render item with custom handle */}
           <GridStackItem id="item5">
@@ -71,44 +69,46 @@ export default function App() {
         </GridStackRender>
 
         <DebugInfo />
-      </ComponentInfoMapProvider>
-    </GridStackProvider>
+      </GridStackProvider>
+    </ComponentInfoMapProvider>
   );
 }
 
-export function DynamicComponents() {
+export function DynamicGridStackItems() {
   const { componentInfoMap } = useComponentInfoMap();
 
   return (
     <>
-      {Array.from(componentInfoMap.entries()).map(([id, componentInfo]) => {
-        const Component = COMPONENT_MAP[componentInfo.component];
-        if (!Component) {
-          throw new Error(`Component ${componentInfo.component} not found`);
-        }
+      {Array.from(componentInfoMap.entries()).map(
+        ([widgetId, componentInfo]) => {
+          const Component = COMPONENT_MAP[componentInfo.component];
+          if (!Component) {
+            throw new Error(`Component ${componentInfo.component} not found`);
+          }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const props = componentInfo.serializableProps as any;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const props = componentInfo.serializableProps as any;
 
-        if (componentInfo.component === "ComplexCard") {
+          if (componentInfo.component === "ComplexCard") {
+            return (
+              <GridStackItem key={widgetId} id={widgetId}>
+                <ComplexCardEditableWrapper
+                  key={`complex-card-editable-wrapper-${widgetId}`}
+                  serializableProps={componentInfo.serializableProps}
+                >
+                  <Component {...props} key={`component-${widgetId}`} />
+                </ComplexCardEditableWrapper>
+              </GridStackItem>
+            );
+          }
+
           return (
-            <GridStackItem key={id} id={id}>
-              <ComplexCardEditableWrapper
-                key={`complex-card-editable-wrapper-${id}`}
-                serializableProps={componentInfo.serializableProps}
-              >
-                <Component {...props} key={`component-${id}`} />
-              </ComplexCardEditableWrapper>
+            <GridStackItem key={widgetId} id={widgetId}>
+              <Component {...props} key={`component-${widgetId}`} />
             </GridStackItem>
           );
         }
-
-        return (
-          <GridStackItem key={id} id={id}>
-            <Component {...props} key={`component-${id}`} />
-          </GridStackItem>
-        );
-      })}
+      )}
     </>
   );
 }
