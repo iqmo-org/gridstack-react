@@ -1,7 +1,10 @@
-import type { GridStack, GridStackElement, GridStackOptions, GridStackWidget } from "gridstack";
+import type {
+  GridStack,
+  GridStackElement,
+  GridStackOptions,
+  GridStackWidget,
+} from "gridstack";
 import { createContext, useContext } from "react";
-
-export type WidgetCallback = (id: string) => Omit<GridStackWidget, "id">;
 
 export interface GridStackContextType {
   initialOptions: GridStackOptions;

@@ -1,5 +1,4 @@
 export {
-  type WidgetCallback,
   type GridStackContextType,
   GridStackContext,
   useGridStackContext,
