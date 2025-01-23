@@ -1,9 +1,12 @@
 import { PropsWithChildren } from "react";
-import { useGridStackItemContext } from "./lib/grid-stack-item-context";
-import { GridStackHandleReInitializer, useGridStackContext } from "./lib";
-import { newId } from "./utils";
-import { CUSTOM_DRAGGABLE_HANDLE_CLASSNAME } from "./defaultGridOptions";
-import { useComponentInfoMap } from "./ComponentsInfo";
+import {
+  GridStackHandleReInitializer,
+  useGridStackContext,
+  useGridStackItemContext,
+} from "../lib";
+import { newId } from "../utils";
+import { CUSTOM_DRAGGABLE_HANDLE_CLASSNAME } from "../default-grid-options";
+import { useComponentInfoMap } from "./component-info-map";
 
 export function ComplexCard(props: { title: string }) {
   return (

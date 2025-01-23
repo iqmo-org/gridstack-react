@@ -15,4 +15,5 @@ export { GridStackHandleReInitializer } from "./grid-stack-handle-re-initializer
 export {
   GridStackItemContext,
   type GridStackItemContextType,
+  useGridStackItemContext,
 } from "./grid-stack-item-context";

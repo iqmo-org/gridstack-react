@@ -1,25 +1,6 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useCallback,
-  useContext,
-  useState,
-} from "react";
-import { ComponentInfo } from "./componentMap";
-
-export const ComponentInfoMapContext = createContext<{
-  componentInfoMap: Map<string, ComponentInfo>;
-  setComponentInfoMap: (componentInfoMap: Map<string, ComponentInfo>) => void;
-  removeComponentInfo: (widgetId: string) => void;
-  addComponentInfo: (widgetId: string, componentInfo: ComponentInfo) => void;
-  updateComponentInfo: (widgetId: string, componentInfo: ComponentInfo) => void;
-}>({
-  componentInfoMap: new Map(),
-  setComponentInfoMap: () => {},
-  removeComponentInfo: () => {},
-  addComponentInfo: () => {},
-  updateComponentInfo: () => {},
-});
+import { PropsWithChildren, useState, useCallback } from "react";
+import { ComponentInfo } from "../../component-map";
+import { ComponentInfoMapContext } from "./component-info-map-context";
 
 export function ComponentInfoMapProvider({
   children,
@@ -74,14 +55,4 @@ export function ComponentInfoMapProvider({
       {children}
     </ComponentInfoMapContext.Provider>
   );
-}
-
-export function useComponentInfoMap() {
-  const context = useContext(ComponentInfoMapContext);
-  if (!context) {
-    throw new Error(
-      "useComponentInfoMap must be used within a ComponentInfoMapProvider"
-    );
-  }
-  return context;
 }

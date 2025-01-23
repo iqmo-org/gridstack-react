@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { ComplexCard } from "./ComplexCard";
+import { ComplexCard } from "./components/complex-card";
 
 export const COMPONENT_MAP = {
   Text: (props: { content: string }) => <div>{props.content}</div>,
