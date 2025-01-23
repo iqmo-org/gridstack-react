@@ -35,7 +35,7 @@ export default function App() {
       },
       item999: {
         component: "ComplexCard",
-        serializableProps: { title: "Complex Card" },
+        serializableProps: { title: "Complex Card", color: "red" },
       },
     })
   );

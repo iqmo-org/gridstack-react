@@ -13,7 +13,7 @@ export function GridStackItem(
   const renderContext = useGridStackRenderContext();
   const widgetContainer = renderContext.getWidgetContainer(props.id);
 
-  const { removeWidget } = useGridStackContext();
+  const { removeWidget, _gridStack } = useGridStackContext();
 
   const remove = useCallback(() => {
     if (widgetContainer?.parentElement) {
@@ -46,12 +46,26 @@ export function GridStackItem(
     return null;
   }, [widgetContainer?.parentElement]);
 
+  const setSize = useCallback(
+    (size: { w: number; h: number }) => {
+      if (widgetContainer?.parentElement) {
+        _gridStack.value?.update(widgetContainer.parentElement, {
+          w: size.w,
+          h: size.h,
+        });
+      }
+    },
+    [_gridStack.value, widgetContainer?.parentElement]
+  );
+
   if (!widgetContainer) {
     return null;
   }
 
   return createPortal(
-    <GridStackItemContext.Provider value={{ id: props.id, remove, getBounds }}>
+    <GridStackItemContext.Provider
+      value={{ id: props.id, remove, getBounds, setSize }}
+    >
       {props.children}
     </GridStackItemContext.Provider>,
     widgetContainer

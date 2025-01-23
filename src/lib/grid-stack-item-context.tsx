@@ -17,6 +17,7 @@ export type GridStackItemContextType = {
       h: number | undefined;
     };
   } | null;
+  setSize: (size: { w: number; h: number }) => void;
 };
 
 export const GridStackItemContext = createContext<GridStackItemContextType>({
@@ -27,6 +28,9 @@ export const GridStackItemContext = createContext<GridStackItemContextType>({
   getBounds: () => {
     console.error("getBounds not implemented");
     return null;
+  },
+  setSize: () => {
+    console.error("setSize not implemented");
   },
 });
 
