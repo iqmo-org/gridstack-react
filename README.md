@@ -142,3 +142,135 @@ Render item with custom handle.
   </GridStackHandleReInitializer>
 </GridStackItem>
 ```
+
+## API Reference
+
+### Components
+
+#### GridStackProvider
+
+Top-level component that provides GridStack context.
+
+```typescript
+type GridStackProviderProps = {
+  initialOptions: GridStackOptions; // GridStack initialization options
+  children: React.ReactNode;
+};
+```
+
+#### GridStackRender
+
+Render GridStack root container component.
+
+```typescript
+type GridStackRenderProps = {
+  children: React.ReactNode;
+};
+```
+
+#### GridStackItem
+
+Component representing a single grid item.
+
+```typescript
+type GridStackItemProps = {
+  id: string; // Grid item unique identifier
+  children: React.ReactNode;
+};
+```
+
+#### GridStackHandleReInitializer
+
+Experimental component for reinitializing the drag handle of a grid item.
+
+```typescript
+type GridStackHandleReInitializerProps = {
+  children: React.ReactNode;
+};
+```
+
+### Contexts
+
+#### GridStackContext
+
+Provide GridStack core functionality context.
+
+```typescript
+interface GridStackContextType {
+  initialOptions: GridStackOptions;
+  addWidget: (widget: GridStackWidget) => void;
+  removeWidget: (el: GridStackElement) => void;
+  saveOptions: () => ReturnType<GridStack["save"]> | undefined;
+
+  _gridStack: {
+    value: GridStack | null;
+    set: React.Dispatch<React.SetStateAction<GridStack | null>>;
+  };
+}
+```
+
+#### GridStackItemContext
+
+Provide single grid item functionality context.
+
+```typescript
+type GridStackItemContextType = {
+  id: string;
+  remove: () => void;
+  getBounds: () => {
+    current: { x?: number; y?: number; w?: number; h?: number };
+    original: { x?: number; y?: number; w?: number; h?: number };
+  } | null;
+  setSize: (size: { w: number; h: number }) => void;
+};
+```
+
+#### GridStackRenderContext
+
+Provide rendering related functionality context.
+
+```typescript
+type GridStackRenderContextType = {
+  getWidgetContainer: (widgetId: string) => HTMLElement | null;
+};
+```
+
+### Hooks
+
+#### useGridStackContext
+
+Get GridStack context.
+
+```typescript
+function useGridStackContext(): GridStackContextType;
+```
+
+#### useGridStackItemContext
+
+Get grid item context.
+
+```typescript
+function useGridStackItemContext(): GridStackItemContextType;
+```
+
+#### useGridStackRenderContext
+
+Get rendering context.
+
+```typescript
+function useGridStackRenderContext(): GridStackRenderContextType;
+```
+
+### Type Exports
+
+```typescript
+export type {
+  GridStackContextType,
+  GridStackProviderProps,
+  GridStackRenderContextType,
+  GridStackRenderProps,
+  GridStackItemProps,
+  GridStackItemContextType,
+  GridStackHandleReInitializerProps,
+};
+```
