@@ -1,10 +1,4 @@
-import {
-  PropsWithChildren,
-  useCallback,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-} from "react";
+import { PropsWithChildren, useCallback, useLayoutEffect, useRef } from "react";
 import { useGridStackContext } from "./grid-stack-context";
 import { GridStack, GridStackOptions, GridStackWidget } from "gridstack";
 import { GridStackRenderContext } from "./grid-stack-render-context";
@@ -41,17 +35,12 @@ export function GridStackRender({ children }: PropsWithChildren) {
     }
   }, [gridStack, initGrid, setGridStack]);
 
+  const getWidgetContainer = useCallback((widgetId: string) => {
+    return widgetContainersRef.current.get(widgetId) || null;
+  }, []);
+
   return (
-    <GridStackRenderContext.Provider
-      value={useMemo(
-        () => ({
-          getWidgetContainer: (widgetId: string) => {
-            return widgetContainersRef.current.get(widgetId) || null;
-          },
-        }),
-        []
-      )}
-    >
+    <GridStackRenderContext.Provider value={{ getWidgetContainer }}>
       <div ref={containerRef}>{gridStack ? children : null}</div>
     </GridStackRenderContext.Provider>
   );

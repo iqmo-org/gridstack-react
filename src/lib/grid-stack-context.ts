@@ -1,4 +1,4 @@
-import type { GridStack, GridStackOptions, GridStackWidget } from "gridstack";
+import type { GridStack, GridStackElement, GridStackOptions, GridStackWidget } from "gridstack";
 import { createContext, useContext } from "react";
 
 export type WidgetCallback = (id: string) => Omit<GridStackWidget, "id">;
@@ -6,7 +6,7 @@ export type WidgetCallback = (id: string) => Omit<GridStackWidget, "id">;
 export interface GridStackContextType {
   initialOptions: GridStackOptions;
   addWidget: (widget: GridStackWidget) => void;
-  removeWidget: (id: string) => void;
+  removeWidget: (el: GridStackElement) => void;
   saveOptions: () => ReturnType<GridStack["save"]> | undefined;
 
   _gridStack: {

@@ -1,4 +1,9 @@
-import type { GridStack, GridStackOptions, GridStackWidget } from "gridstack";
+import type {
+  GridStack,
+  GridStackElement,
+  GridStackOptions,
+  GridStackWidget,
+} from "gridstack";
 import { type PropsWithChildren, useCallback, useState } from "react";
 import { GridStackContext } from "./grid-stack-context";
 
@@ -16,8 +21,8 @@ export function GridStackProvider({
   );
 
   const removeWidget = useCallback(
-    (id: string) => {
-      gridStack?.removeWidget(id);
+    (el: GridStackElement) => {
+      gridStack?.removeWidget(el);
     },
     [gridStack]
   );
