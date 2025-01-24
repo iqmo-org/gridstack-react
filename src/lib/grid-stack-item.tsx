@@ -3,7 +3,7 @@ import { useGridStackRenderContext } from "./grid-stack-render-context";
 import { createPortal } from "react-dom";
 import { GridStackItemContext } from "./grid-stack-item-context";
 import { useGridStackContext } from "./grid-stack-context";
-import { GridItemHTMLElement } from "gridstack";
+import { GridItemHTMLElement, GridStackWidget } from "gridstack";
 
 export type GridStackItemProps = PropsWithChildren<{
   id: string;
@@ -20,6 +20,15 @@ export function GridStackItem(props: GridStackItemProps) {
       removeWidget(widgetContainer.parentElement as GridItemHTMLElement);
     }
   }, [removeWidget, widgetContainer?.parentElement]);
+
+  const update = useCallback(
+    (opt: GridStackWidget) => {
+      if (widgetContainer?.parentElement) {
+        _gridStack.value?.update(widgetContainer.parentElement, opt);
+      }
+    },
+    [_gridStack.value, widgetContainer?.parentElement]
+  );
 
   const getBounds = useCallback(() => {
     const parentNode = widgetContainer?.parentElement;
@@ -57,6 +66,17 @@ export function GridStackItem(props: GridStackItemProps) {
     },
     [_gridStack.value, widgetContainer?.parentElement]
   );
+  const setPosition = useCallback(
+    (position: { x: number; y: number }) => {
+      if (widgetContainer?.parentElement) {
+        _gridStack.value?.update(widgetContainer.parentElement, {
+          x: position.x,
+          y: position.y,
+        });
+      }
+    },
+    [_gridStack.value, widgetContainer?.parentElement]
+  );
 
   if (!widgetContainer) {
     return null;
@@ -64,7 +84,14 @@ export function GridStackItem(props: GridStackItemProps) {
 
   return createPortal(
     <GridStackItemContext.Provider
-      value={{ id: props.id, remove, getBounds, setSize }}
+      value={{
+        id: props.id,
+        remove,
+        update,
+        getBounds,
+        setSize,
+        setPosition,
+      }}
     >
       {props.children}
     </GridStackItemContext.Provider>,

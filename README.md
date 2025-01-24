@@ -216,12 +216,17 @@ Provide single grid item functionality context.
 ```typescript
 type GridStackItemContextType = {
   id: string;
+  // Native methods
   remove: () => void;
+  update: (opt: GridStackWidget) => void;
+
+  // Extended methods
   getBounds: () => {
     current: { x?: number; y?: number; w?: number; h?: number };
     original: { x?: number; y?: number; w?: number; h?: number };
   } | null;
   setSize: (size: { w: number; h: number }) => void;
+  setPosition: (position: { x: number; y: number }) => void;
 };
 ```
 

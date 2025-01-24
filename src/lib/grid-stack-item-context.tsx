@@ -1,8 +1,14 @@
+import { GridStackWidget } from "gridstack";
 import { createContext, useContext } from "react";
 
 export type GridStackItemContextType = {
   id: string;
+
+  // Native methods
   remove: () => void;
+  update: (opt: GridStackWidget) => void;
+
+  // Extended methods
   getBounds: () => {
     current: {
       x: number | undefined;
@@ -18,6 +24,7 @@ export type GridStackItemContextType = {
     };
   } | null;
   setSize: (size: { w: number; h: number }) => void;
+  setPosition: (position: { x: number; y: number }) => void;
 };
 
 export const GridStackItemContext = createContext<GridStackItemContextType>({
@@ -25,12 +32,18 @@ export const GridStackItemContext = createContext<GridStackItemContextType>({
   remove: () => {
     console.error("remove not implemented");
   },
+  update: () => {
+    console.error("update not implemented");
+  },
   getBounds: () => {
     console.error("getBounds not implemented");
     return null;
   },
   setSize: () => {
     console.error("setSize not implemented");
+  },
+  setPosition: () => {
+    console.error("setPosition not implemented");
   },
 });
 
