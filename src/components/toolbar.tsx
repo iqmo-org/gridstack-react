@@ -11,7 +11,6 @@ export function Toolbar() {
     <div
       style={{
         border: "1px solid gray",
-        width: "100%",
         padding: "10px",
         marginBottom: "10px",
         display: "flex",

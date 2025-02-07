@@ -1,8 +1,12 @@
-# GridStack React
+# React GridStack Wrapper Demo
 
-Online demo: https://gridstack-react.pages.dev/
+> The code in this repository will be manually copied to the react folder of the [gridstack.js](https://github.com/gridstack/gridstack.js/tree/master/react) main repository.
 
-> The code in this repository will be manually copied to the react folder of the [gridstack.js](https://github.com/gridstack/gridstack.js) main repository.
+A React wrapper component for GridStack that provides better TypeScript support and React integration experience.
+
+Online Preview: https://gridstack-react.pages.dev/
+
+Open in [CodeSandbox](https://codesandbox.io/p/sandbox/github/Aysnine/gridstack-react/tree/main?file=/src/App.tsx)
 
 ## TODO
 
