@@ -26,6 +26,37 @@ This is not an npm package, it's just a demo project. Please copy the `src/lib` 
 
 Render item with widget id selector.
 
+Code here: [src/examples/000-simple/index.tsx](src/examples/000-simple/index.tsx)
+
+```tsx
+function Simple() {
+  const [uncontrolledInitialOptions] = useState<GridStackOptions>(() => ({
+    ...defaultGridOptions,
+    children: [
+      { id: "item1", h: 2, w: 2, x: 0, y: 0 },
+      { id: "item2", h: 2, w: 2, x: 2, y: 0 },
+    ],
+  }));
+
+  return (
+    <GridStackContainer
+      initialOptions={uncontrolledInitialOptions}
+      renderRawContent
+    >
+      <GridStackItem id="item1">
+        <div style={{ color: "yellow" }}>hello</div>
+      </GridStackItem>
+
+      <GridStackItem id="item2">
+        <div style={{ color: "blue" }}>grid</div>
+      </GridStackItem>
+    </GridStackContainer>
+  );
+}
+```
+
+Or split the grid stack container to provide grid stack context and render component for access to grid stack context.
+
 Code here: [src/examples/001-simple/index.tsx](src/examples/001-simple/index.tsx)
 
 ```tsx
@@ -40,6 +71,7 @@ function Simple() {
 
   return (
     <GridStackProvider initialOptions={uncontrolledInitialOptions}>
+      {/* Custom toolbar component. Access to grid stack context by useGridStackContext hook. */}
       <Toolbar />
 
       <GridStackRender renderRawContent>
@@ -211,6 +243,17 @@ function CustomHandle() {
 ## API Reference
 
 ### Components
+
+#### GridStackContainer
+
+Top-level component that provides GridStack context and GridStack root container. Equivalent to `GridStackProvider` and `GridStackRender` combined.
+
+```typescript
+type GridStackContainerProps = {
+  initialOptions: GridStackOptions; // GridStack initialization options
+  children: React.ReactNode;
+};
+```
 
 #### GridStackProvider
 
