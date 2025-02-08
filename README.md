@@ -18,8 +18,6 @@ Open in [CodeSandbox](https://codesandbox.io/p/sandbox/github/Aysnine/gridstack-
 - [x] Custom handle
 - [x] Drag between two grid stacks
 
-Welcome to give any suggestions and ideas, you can submit an issue or contact me by email. :)
-
 ## Usage
 
 This is not an npm package, it's just a demo project. Please copy the `src/lib` code to your project to use it.
