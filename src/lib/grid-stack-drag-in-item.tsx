@@ -9,7 +9,6 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { newId } from "../utils";
 
 export type GridStackDragInItemProps = PropsWithChildren<
   Omit<ComponentProps<"div">, "content" | "children" | "widget"> & {
@@ -34,6 +33,7 @@ export function GridStackDragInItem({
 }: GridStackDragInItemProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const [clones, setClones] = useState<Map<string, HTMLElement>>(new Map());
+  const incrementalId = useRef(0);
 
   useEffect(() => {
     if (panelRef.current) {
@@ -43,9 +43,11 @@ export function GridStackDragInItem({
           ...dragOptions,
           helper: (el) => {
             const clone = Utils.cloneNode(el);
+            const id = String(incrementalId.current++);
+
             setClones((prev) => {
               const newMap = new Map(prev);
-              newMap.set(newId(), clone);
+              newMap.set(id, clone);
               return newMap;
             });
             // ! clear dom copied from the original element
