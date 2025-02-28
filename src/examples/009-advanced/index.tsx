@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import {
+  GridStackDragInItem,
   GridStackItem,
   GridStackProvider,
   GridStackRender,
@@ -15,6 +16,7 @@ import {
   useComponentInfoMap,
 } from "./components/component-info-map";
 import { newId } from "../../utils";
+import { Counter } from "./components/counter";
 
 export function Advanced() {
   // Data about layout by gridstack option
@@ -233,6 +235,40 @@ export function Toolbar() {
       >
         Append Complex Card (4x4)
       </button>
+
+      {/* TODO add to the component info map */}
+      <GridStackDragInItem widget={{ h: 2, w: 2 }}>
+        <div
+          style={{
+            border: "1px dashed green ",
+            backgroundColor: "lime",
+            padding: "0 10px",
+          }}
+        >
+          Drag me add to the grid
+        </div>
+      </GridStackDragInItem>
+
+      {/* TODO add to the component info map */}
+      <GridStackDragInItem
+        widget={{ h: 2, w: 2 }}
+        content={
+          <div>
+            Copied Counter:
+            <Counter label="count" />
+          </div>
+        }
+      >
+        <div
+          style={{
+            border: "1px dashed green ",
+            backgroundColor: "lime",
+            padding: "0 10px",
+          }}
+        >
+          Drag Counter like: <Counter label="count" />
+        </div>
+      </GridStackDragInItem>
     </div>
   );
 }
