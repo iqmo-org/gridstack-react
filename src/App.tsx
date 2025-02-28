@@ -4,7 +4,7 @@ import { Simple } from "./examples/001-simple";
 import { Nested } from "./examples/002-nested";
 import { CustomHandle } from "./examples/003-custom-handle";
 import { Advanced } from "./examples/009-advanced";
-import { DragInOut } from "./examples/004-drag-in";
+import { DragIn } from "./examples/004-drag-in";
 
 export default function App() {
   return (
@@ -21,7 +21,7 @@ export default function App() {
       <h2>Custom Handle</h2>
       <CustomHandle />
       <h2 id="drag-in">Drag In (Copy)</h2>
-      <DragInOut />
+      <DragIn />
       <h2 id="advanced">Advanced</h2>
       <Advanced />
     </div>

@@ -4,12 +4,12 @@ import { defaultGridOptions } from "../../default-grid-options";
 import { GridStackItem, GridStackDragInItem } from "../../lib";
 import { GridStackContainer } from "../../lib/grid-stack-container";
 
-export function DragInOut() {
+export function DragIn() {
   const [uncontrolledInitialOptions] = useState<GridStackOptions>(() => ({
     ...defaultGridOptions,
     children: [
-      { id: "item1", h: 2, w: 2, x: 0, y: 0 },
-      { id: "item2", h: 2, w: 2, x: 2, y: 0 },
+      { id: "004-item1", h: 2, w: 2, x: 0, y: 0 },
+      { id: "004-item2", h: 2, w: 2, x: 2, y: 0 },
     ],
   }));
 
@@ -38,15 +38,12 @@ export function DragInOut() {
         </GridStackDragInItem>
       </div>
 
-      <GridStackContainer
-        initialOptions={uncontrolledInitialOptions}
-        renderRawContent
-      >
-        <GridStackItem id="item1">
+      <GridStackContainer initialOptions={uncontrolledInitialOptions}>
+        <GridStackItem id="004-item1">
           <div style={{ color: "yellow" }}>hello</div>
         </GridStackItem>
 
-        <GridStackItem id="item2">
+        <GridStackItem id="004-item2">
           <div style={{ color: "blue" }}>grid</div>
         </GridStackItem>
       </GridStackContainer>
