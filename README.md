@@ -15,8 +15,10 @@ Open in [CodeSandbox](https://codesandbox.io/p/sandbox/github/Aysnine/gridstack-
 - [x] Nested Sub Grid
 - [x] Remove Widget
 - [x] Copy(Duplicate) Widget
-- [x] Custom handle
 - [x] Drag between two grid stacks
+- [x] Custom handle (Experimental)
+- [x] Drag in item (Experimental)
+- [ ] Save/Load grid stack options from storage
 
 ## Usage
 
