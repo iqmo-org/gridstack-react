@@ -1,8 +1,9 @@
 import { GridStackOptions } from "gridstack";
 import { useState } from "react";
+
+import { GridStackItem,GridStackContainer } from "@iqmo/gridstack-react";
 import { defaultGridOptions } from "../../default-grid-options";
-import { GridStackItem } from "../../lib";
-import { GridStackContainer } from "../../lib/grid-stack-container";
+
 
 export function Simple0() {
   const [uncontrolledInitialOptions] = useState<GridStackOptions>(() => ({

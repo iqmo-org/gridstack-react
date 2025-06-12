@@ -1,8 +1,8 @@
 import { GridStackOptions } from "gridstack";
 import { useState } from "react";
 import { defaultGridOptions } from "../../default-grid-options";
-import { GridStackItem, GridStackDragInItem } from "../../lib";
-import { GridStackContainer } from "../../lib/grid-stack-container";
+import { GridStackItem, GridStackDragInItem,GridStackContainer } from "@iqmo/gridstack-react";
+
 
 export function DragIn() {
   const [uncontrolledInitialOptions] = useState<GridStackOptions>(() => ({

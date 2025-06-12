@@ -1,10 +1,13 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
+import { nodeExternals } from 'rollup-plugin-node-externals'
+
+import { resolve } from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    host: true
-  },
-})
+  plugins: [nodeExternals(),dts({ rollupTypes: true })],
+  build: {
+    lib: { entry: resolve(__dirname, "lib/index.ts"), formats: ["es"] },
+  }
+});

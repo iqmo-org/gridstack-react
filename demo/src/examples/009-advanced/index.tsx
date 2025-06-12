@@ -6,7 +6,7 @@ import {
   GridStackProvider,
   GridStackRender,
   useGridStackContext,
-} from "../../lib";
+} from "@iqmo/gridstack-react";
 import { GridStackOptions } from "gridstack";
 import { defaultGridOptions } from "../../default-grid-options";
 import { COMPONENT_MAP, ComponentInfo } from "./component-map";
@@ -15,7 +15,7 @@ import {
   ComponentInfoMapProvider,
   useComponentInfoMap,
 } from "./components/component-info-map";
-import { newId } from "../../utils";
+import { newId } from "../utils";
 import { Counter } from "./components/counter";
 
 export function Advanced() {

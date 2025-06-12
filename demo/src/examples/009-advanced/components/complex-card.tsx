@@ -3,10 +3,11 @@ import {
   GridStackHandleReInitializer,
   useGridStackContext,
   useGridStackItemContext,
-} from "../../../lib";
-import { newId } from "../../../utils";
+} from "@iqmo/gridstack-react";
+
 import { CUSTOM_DRAGGABLE_HANDLE_CLASSNAME } from "../../../default-grid-options";
 import { useComponentInfoMap } from "./component-info-map";
+import { newId } from "../../utils";
 
 type ComplexCardProps = {
   title: string;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useGridStackContext } from "../lib";
+import { useGridStackContext } from "@iqmo/gridstack-react";
 import { GridStackOptions, GridStackWidget } from "gridstack";
 
 export function DebugInfo() {

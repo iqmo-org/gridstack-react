@@ -9,7 +9,7 @@ import {
   GridStackItem,
   GridStackProvider,
   GridStackRender,
-} from "../../lib";
+} from "@iqmo/gridstack-react";
 
 export function CustomHandle() {
   const [uncontrolledInitialOptions] = useState<GridStackOptions>(() => ({

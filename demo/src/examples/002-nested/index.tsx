@@ -6,8 +6,8 @@ import {
   GridStackProvider,
   GridStackRender,
   useGridStackContext,
-} from "../../lib";
-import { newId } from "../../utils";
+} from "@iqmo/gridstack-react";
+import { newId } from "../utils";
 
 export function Nested() {
   const [uncontrolledInitialOptions] = useState<GridStackOptions>(() => ({
